@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from cis301.examples.animal import Animal
+from cis301.objects.animal import Animal
 
 class Mammal(Animal):
     """

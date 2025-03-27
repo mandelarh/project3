@@ -1,4 +1,4 @@
-from cis301.examples.mammal import Mammal
+from cis301.objects.mammal import Mammal
 import inspect
 
 class Human (Mammal):
