@@ -1,5 +1,8 @@
 from cis301.objects.human import Human
 import csv
+import json
+import yaml
+import pickle
 class Person(Human):
     def __init__(self, name, Phone, Email):
         super().__init__(name)
@@ -24,12 +27,13 @@ class Person(Human):
         return (self.name.lower() < other.name.lower())
     
     def toJ3son(self):
+
         return f'''{{
     "name": "{self.name}",
     "phone": "{self.phone}",
     "email": "{self.email}"
 }}'''
-        
+
 
     
     @staticmethod
@@ -65,20 +69,72 @@ class phonebook:
         with open(filename, "r") as csvfile:
             reader = csv.reader(csvfile)
             self.contacts.clear()
+            next(reader) # skipping the first row thats used as a header 
             for row in reader:
                 if len(row) > 0:
                     #resultset.append(row)
                     self.contacts.append(Person(row[0], row[1], row[2]))
                 print(row)
             return resultset
-    def toJ3SON(self):
-        jsondata = '{phonebook:['
-        for contact in self.contacts:
-            jsondata += contact.toJ3SON()
-            jsondata += ","
-        jsondata = jsondata[::-1]
-        jsondata += ']}'
+    
+    
+    
+    import json
+
+    def toJ3SON(self, filename=None):
+        phonebook_data = {
+            "phonebook": [json.loads(contact.toJ3son()) for contact in self.contacts]
+        }
+        jsondata = json.dumps(phonebook_data, indent=4)  # Pretty-print JSON
+    
+        if filename:
+            with open(filename, "w") as jsonfile:
+                jsonfile.write(jsondata)
         return jsondata
+    
+    def phonebook_constructor_from_dict(self, dictdata):
+        pb = phonebook()
+        for contact in dictdata["phonebook"]:
+            person = Person(contact["name"], contact["phone"], contact["email"])
+            pb.add_contact(person)
+        return pb
+
+        
+    
+    def fromJ3son(self, filename):
+        jsondata = ""
+        with open(filename, "r") as jsonfile:
+            jsondata = json.load(jsonfile)
+            print(jsondata)
+            pb = phonebook()
+            return self.phonebook_constructor_from_dict(jsondata)
+            '''
+            for contact in jsondata["phonebook"]:
+                person = Person(contact["name"], contact["phone"], contact["email"])
+                pb.add_contact(person)
+            return pb
+            '''
+    def toyaml(self, filename):
+        with open(filename, "w") as yamlfile:
+            yamldata = self.toJ3SON()
+            yaml.dump(json.loads(yamldata), yamlfile)
+
+    def fromyaml(self, filename):
+        with open(filename, "r") as yamlfile:
+            yamldata = yaml.safe_load(yamlfile)
+            print(yamldata)
+            return self.phonebook_constructor_from_dict(yamldata)
+        
+
+    def topickle(self,filename):
+        with open(filename, "wb") as picklefile: # wb = write binary 
+            pickle.dump(self, picklefile)
+
+    def frompickle(self,filename):
+        with open(filename, "rb") as picklefile: #rb = read binary
+            return pickle.load(picklefile)
+
+            
 
         
 class util:
@@ -144,6 +200,12 @@ if __name__ == '__main__':
     pb.toCSV("phonebook1.csv")
     pb.fromCSV("phonebook1.csv")
     print(pb.contacts)
+    print(pb.toJ3SON("phonebook.json"))
+    pb.fromJ3son("phonebook.json") #need to work on json formating for this to work 
+    pb.toyaml("phonebook.yaml")
+    pb.fromyaml("phonebook.yaml")
+    pb.topickle("phonebook.bin")
+    print(pb.frompickle("phonebook.bin"))
 
 
 
