@@ -34,6 +34,19 @@ class Person(Human):
     "email": "{self.email}"
 }}'''
 
+    def toxml(self, filename):
+        import xml.etree.ElementTree as ET
+        root = ET.Element('person')
+        ET.SubElement(root, 'name').text = self.name
+        ET.SubElement(root, 'email').text = self.email
+        ET.SubElement(root, 'phone').text = self.phone
+        tree = ET.ElementTree(root)
+        tree.write(filename)
+
+
+    def fromxml(self, filename):
+        import xml.etree.ElementTree as ET
+        return (ET.parse(filename))
 
     
     @staticmethod
@@ -79,7 +92,6 @@ class phonebook:
     
     
     
-    import json
 
     def toJ3SON(self, filename=None):
         phonebook_data = {
@@ -207,6 +219,9 @@ if __name__ == '__main__':
     pb.topickle("phonebook.bin")
     print(pb.frompickle("phonebook.bin"))
 
+    p1.toxml("person.xml")
+    et = p1.fromxml("person.xml")
+    print(et)
 
 
 
