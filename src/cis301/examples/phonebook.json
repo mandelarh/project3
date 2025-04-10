@@ -1,0 +1,14 @@
+{
+    "phonebook": [
+        {
+            "name": "mandela",
+            "phone": "763-710-1431",
+            "email": "mandela.haulcy@students.cau.edu"
+        },
+        {
+            "name": "wynton",
+            "phone": "612-759-0233",
+            "email": "ilovefood3901@gmail.com"
+        }
+    ]
+}
