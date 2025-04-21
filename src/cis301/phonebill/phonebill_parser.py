@@ -12,11 +12,17 @@ class PhoneBillParser (metaclass=abc.ABCMeta):
         """
         verifies if the implementing class has implemented all abstract methods
         """
-        return (hasattr(subclass, 'dump') and
+        return (hasattr(subclass, 'parse') and
                 callable(subclass.dump) or
                 NotImplemented)
 
-    T = TypeVar('T', bounds=AbstractPhoneBill)
+    @abc.abstractmethod
+    def parse(self, bill: 'AbstractPhoneBill'):
+        if not isinstance(bill, AbstractPhoneBill):
+            raise Exception("Invalid object type. Expected type of AbstractPhoneBill")
+        pass
+    '''
+    T = TypeVar('T', bound='AbstractPhoneBill')
     @abc.abstractmethod
     def parse(self)-> AbstractPhoneBill:
         """
@@ -26,3 +32,4 @@ class PhoneBillParser (metaclass=abc.ABCMeta):
             raises I/O exception when accessing an invalid file
         """
         pass
+    '''

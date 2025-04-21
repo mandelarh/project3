@@ -14,9 +14,9 @@ class PhoneBillDumper (metaclass=abc.ABCMeta):
                 callable(subclass.dump) or
                 NotImplemented)
 
-    T = TypeVar('T', bounds=AbstractPhoneBill)
+    #T = TypeVar('T') #bounds=AbstractPhoneBill
     @abc.abstractmethod
-    def dump(bill: T):
+    def dump(self, bill: 'AbstractPhoneBill'):
         if not isinstance(bill, AbstractPhoneBill):
             raise Exception("Invalid object type. Expected type of AbstractPhoneBill")
         pass
