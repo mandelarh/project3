@@ -16,4 +16,4 @@ class TextDumper(PhoneBillDumper):
         with open(self.output_file, 'w') as f:
             f.write(f"Customer: {bill.get_customer()}\n")
             for call in bill.get_phonecalls():
-                f.write(f"Call: {call.caller} → {call.callee}\n")  # ← Adjust attributes as needed
+                f.write(f"Call: {call.caller} → {call.callee} {call.start_time} {call.end_time}\n")  # ← Adjust attributes as needed

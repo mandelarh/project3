@@ -28,9 +28,10 @@ def add_phone_call_to_bill(bill, call):
     print(bill)
 
 def write(bill):
-    dumper = TextDumper("phonebills.txt")
+    file = "phonebills.txt"
+    dumper = TextDumper(file)
     dumper.dump(bill)
-    print("Test complete. Check test_output.txt")
+    print(f"write complete. Check {file}")
 def read(bill):
     parser = TextParser("phonebills.txt")
     bill = parser.parse()
